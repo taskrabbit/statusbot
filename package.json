@@ -1,0 +1,26 @@
+ {
+  "author"      : "Evan Tahler <evantahler@gmail.com>",
+  "name"        : "statusbot",
+  "description" : "statusbot: checking your stuff",
+  "version"     : "0.0.1",
+  "engines"     : {
+    "node": ">=0.10.0"
+  },
+  "dependencies" : {
+    "actionhero" : "9.1.0",
+    "ws"         : "latest",
+    "grunt"      : "latest",
+    "request"    : "latest"
+  },
+  "devDependencies" : {
+    "mocha"  : "latest",
+    "should" : "latest"
+  },
+  "scripts" : {
+    "help"         : "actionhero help",
+    "start"        : "actionhero start",
+    "actionhero"   : "actionhero",
+    "startCluster" : "actionhero startCluster",
+    "test"         : "mocha"
+  }
+}
