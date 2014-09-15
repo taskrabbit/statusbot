@@ -35,6 +35,10 @@ exports.check = function(api, next){
             if(err != null){ api.log(err); }
             api.statuspage.metrics.data(check.metric, delta, (start / 1000), function(err, response, body){
               if(err != null){ api.log(err); }
+              if(body != null){
+                body = JSON.parse(body);
+                if(body.err != null){ api.log(body.err); }
+              }
               var details = { status:status, delta:delta }
               api.log('checked ' + check.url, 'info', details);
               callback(null, details);

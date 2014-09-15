@@ -116,7 +116,7 @@ exports.statuspage = function(api, next){
     metrics: {
       data: function(id, value, timestamp, callback){
         if(timestamp == null){
-          timestamp = new Date().getTime() / 1000;
+          timestamp = Math.floor(new Date().getTime() / 1000);
         }
 
         var req  = {
