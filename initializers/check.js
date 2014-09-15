@@ -32,12 +32,12 @@ exports.check = function(api, next){
             api.check.counters[check.name] = 0;
           }
           api.statuspage.components.update(check.component, status, function(err, response, body){
-            if(err != null){ api.log(err); }
+            if(err){ api.log(err); }
             api.statuspage.metrics.data(check.metric, delta, (start / 1000), function(err, response, body){
               if(err != null){ api.log(err); }
               if(body != null){
                 body = JSON.parse(body);
-                if(body.err != null){ api.log(body.err); }
+                if(body.error){ api.log(body.error); }
               }
               var details = { status:status, delta:delta }
               api.log('checked ' + check.url, 'info', details);
