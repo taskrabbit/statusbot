@@ -10,7 +10,10 @@ exports.statuspage = function(api, next){
   api.statuspage = {
 
     baseUrl: "https://api.statuspage.io/v1/pages/" + api.config.statuspage.pageId + "/",
-    authHeader: { Authorization: "OAuth " + api.config.statuspage.apiKey },
+    authHeader: { 
+      Authorization: "OAuth " + api.config.statuspage.apiKey, 
+      // 'Content-type': 'application/x-www-form-urlencoded; charset=utf-8' 
+    },
 
     incidents: {
       condionallyCreate: function(name, status, message, impact, callback){
@@ -115,7 +118,7 @@ exports.statuspage = function(api, next){
 
     metrics: {
       data: function(id, value, timestamp, callback){
-        if(timestamp == null){
+        if(!timestamp){
           timestamp = Math.floor(new Date().getTime() / 1000);
         }
 

@@ -33,11 +33,10 @@ exports.check = function(api, next){
           }
           api.statuspage.components.update(check.component, status, function(err, response, body){
             if(err){ api.log(err); }
-            api.statuspage.metrics.data(check.metric, delta, (start / 1000), function(err, response, body){
-              if(err != null){ api.log(err); }
-              if(body != null){
-                body = JSON.parse(body);
-                if(body.error){ api.log(body.error); }
+            api.statuspage.metrics.data(check.metric, delta, Math.floor(start / 1000), function(err, response, body){
+              if(err){ api.log(err, 'warning'); }
+              if(body && body != ''){
+                if(body.error){ api.log(body.error, 'warning'); }
               }
               var details = { status:status, delta:delta }
               api.log('checked ' + check.url, 'info', details);
