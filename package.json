@@ -10,7 +10,7 @@
     "actionhero" : "9.1.0",
     "ws"         : "latest",
     "grunt"      : "latest",
-    "request"    : "latest"
+    "request"    : "2.40.x"
   },
   "devDependencies" : {
     "mocha"  : "latest",

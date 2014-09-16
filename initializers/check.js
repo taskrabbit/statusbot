@@ -36,6 +36,7 @@ exports.check = function(api, next){
             api.statuspage.metrics.data(check.metric, delta, Math.floor(start / 1000), function(err, response, body){
               if(err){ api.log(err, 'warning'); }
               if(body && body != ''){
+                body = JSON.parse(body);
                 if(body.error){ api.log(body.error, 'warning'); }
               }
               var details = { status:status, delta:delta }

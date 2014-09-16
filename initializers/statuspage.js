@@ -10,9 +10,10 @@ exports.statuspage = function(api, next){
   api.statuspage = {
 
     baseUrl: "https://api.statuspage.io/v1/pages/" + api.config.statuspage.pageId + "/",
-    authHeader: { 
+    header: { 
       Authorization: "OAuth " + api.config.statuspage.apiKey, 
       // 'Content-type': 'application/x-www-form-urlencoded; charset=utf-8' 
+      'Content-type': 'application/json',
     },
 
     incidents: {
@@ -43,7 +44,7 @@ exports.statuspage = function(api, next){
         var req  = {
           url: api.statuspage.baseUrl + 'incidents.json',
           method: 'POST',
-          headers: api.statuspage.authHeader,
+          headers: api.statuspage.header,
           body: JSON.stringify({incident: {
             name: name,
             status: status,
@@ -67,7 +68,7 @@ exports.statuspage = function(api, next){
         var req  = {
           url: api.statuspage.baseUrl + 'incidents/' + id + '.json',
           method: 'PATCH',
-          headers: api.statuspage.authHeader,
+          headers: api.statuspage.header,
           body: JSON.stringify({incident: {
             name: name,
             status: status,
@@ -83,7 +84,7 @@ exports.statuspage = function(api, next){
         var req  = {
           url: api.statuspage.baseUrl + 'incidents.json',
           method: 'GET',
-          headers: api.statuspage.authHeader,
+          headers: api.statuspage.header,
         };
 
         request(req, callback);
@@ -96,7 +97,7 @@ exports.statuspage = function(api, next){
         var req  = {
           url: api.statuspage.baseUrl + 'components/' + id + '.json',
           method: 'PATCH',
-          headers: api.statuspage.authHeader,
+          headers: api.statuspage.header,
           body: JSON.stringify({component: {
             status: status
           }}),
@@ -109,7 +110,7 @@ exports.statuspage = function(api, next){
         var req  = {
           url: api.statuspage.baseUrl + 'components.json',
           method: 'GET',
-          headers: api.statuspage.authHeader,
+          headers: api.statuspage.header,
         };
 
         request(req, callback);
@@ -125,7 +126,7 @@ exports.statuspage = function(api, next){
         var req  = {
           url: api.statuspage.baseUrl + 'metrics/' + id + '/data.json',
           method: 'POST',
-          headers: api.statuspage.authHeader,
+          headers: api.statuspage.header,
           body: JSON.stringify({data: {
             value: value,
             timestamp: timestamp,
@@ -139,7 +140,7 @@ exports.statuspage = function(api, next){
         var req  = {
           url: api.statuspage.baseUrl + 'metrics_providers.json',
           method: 'GET',
-          headers: api.statuspage.authHeader,
+          headers: api.statuspage.header,
         };
 
         request(req, callback);
