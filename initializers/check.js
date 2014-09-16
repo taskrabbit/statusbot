@@ -11,19 +11,19 @@ exports.check = function(api, next){
         if(c.url === url){ check = c; }
       });
 
-      if(check == null){
+      if(!check){
         callback(new Error('no check for that url found'));
       }else{
-        if( api.check.counters[check.name] == null ){ api.check.counters[check.name] = 0; }
+        if(!api.check.counters[check.name]){ api.check.counters[check.name] = 0; }
 
         var start = new Date().getTime();
         request.get(check.url, function(error, response, body){
           var end = new Date().getTime();
           var delta = (end - start);
-          var status = 'operational'
+          var status = 'operational';
           if(delta > check.threshold ){
             status = 'degraded_performance';
-          } else if (error != null || response.statusCode != 200){
+          } else if (error || response.statusCode != 200){
             status = 'partial_outage';
             api.check.counters[check.name]++;
             api.log("outage count for " + check.name + ": " + api.check.counters[check.name]);
@@ -35,11 +35,11 @@ exports.check = function(api, next){
             if(err){ api.log(err); }
             api.statuspage.metrics.data(check.metric, delta, Math.floor(start / 1000), function(err, response, body){
               if(err){ api.log(err, 'warning'); }
-              if(body && body != ''){
+              if(body && body !== ''){
                 body = JSON.parse(body);
                 if(body.error){ api.log(body.error, 'warning'); }
               }
-              var details = { status:status, delta:delta }
+              var details = { status:status, delta:delta };
               api.log('checked ' + check.url, 'info', details);
               callback(null, details);
             });
@@ -54,12 +54,12 @@ exports.check = function(api, next){
       var name = 'Error with ' + check.name;
       api.statuspage.incidents.condionallyCreate(name, status, message, check.impact, function(error, response, body){
         if(error != 'already created'){ api.log('Incident ==>> ' + message, 'warning'); }
-        if(callback != null){
+        if(callback){
           callback(error, response, body);
         }
       });
     }
-  }
+  };
 
   next();
-}
+};

@@ -9,6 +9,15 @@ exports.statuspage = function(api, next){
 
   api.statuspage = {
 
+    _start: function(){
+      if(api.config.statuspage.rebootTime && api.config.statuspage.rebootTime > 0){
+        setTimeout(function(){
+          api.log("rebooting...");
+          api._self.stop(process.exit);
+        }, api.config.statuspage.rebootTime);
+      }
+    },
+
     baseUrl: "https://api.statuspage.io/v1/pages/" + api.config.statuspage.pageId + "/",
     header: { 
       Authorization: "OAuth " + api.config.statuspage.apiKey, 
@@ -39,7 +48,7 @@ exports.statuspage = function(api, next){
         // incident[wants_twitter_update] - Post the new incident to twitter (t or f, defaults to f)
         // incident[impact_override] - Override calculated impact value, one of none|minor|major|critical (optional)
         // incident[component_ids] - List of components whose subscribers should be notified (only applicable for pages with component subscriptions enabled)
-        if(impact == null){ impact = 'none' }
+        if(!impact){ impact = 'none'; }
 
         var req  = {
           url: api.statuspage.baseUrl + 'incidents.json',
@@ -63,7 +72,7 @@ exports.statuspage = function(api, next){
         // incident[wants_twitter_update] - Post the new incident update to twitter (t or f, defaults to f)
         // incident[impact_override] - Override calculated impact value, one of none|minor|major|critical (optional)
         // incident[component_ids] - List of components whose subscribers should be notified (only applicable for pages with component subscriptions enabled)
-        if(impact == null){ impact = 'none' }
+        if(!impact){ impact = 'none'; }
 
         var req  = {
           url: api.statuspage.baseUrl + 'incidents/' + id + '.json',
@@ -150,4 +159,4 @@ exports.statuspage = function(api, next){
   };
 
   next();
-}
+};
