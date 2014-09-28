@@ -5,6 +5,17 @@ exports.check = function(api, next){
   api.check = {
     counters: {},
 
+    _start: function(){
+      this.enqueue();
+      next();
+    },
+
+    enqueue: function(){
+      api.config.statuspage.checks.forEach(function(c){
+        api.tasks.enqueue("check", {url: c.url}, 'statusbot');
+      });
+    },
+
     check: function(url, callback){
       var check;
       api.config.statuspage.checks.forEach(function(c){
