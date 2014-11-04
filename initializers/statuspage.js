@@ -27,15 +27,13 @@ exports.statuspage = function(api, next){
 
     incidents: {
       condionallyCreate: function(name, status, message, impact, callback){
-        api.statuspage.incidents.list(function(err, response, body){
+        api.statuspage.incidents.list_unresolved(function(err, response, body){
           var list = JSON.parse(body);
-          var open = false;
-          list.forEach(function(i){
-            if(i.status != 'resolved'){ open = true; }
-          });
-          if(open === false){
+          if(list.length === 0){
+            api.log("creating incident: " + name + ", " + status, + ", " + message, + ", " + impact);
             api.statuspage.incidents.create(name, status, message, impact, callback);
           }else{
+            api.log("wanted to created incidien, but already active...");
             callback('already created');
           }
         });
@@ -92,6 +90,16 @@ exports.statuspage = function(api, next){
       list: function(callback){
         var req  = {
           url: api.statuspage.baseUrl + 'incidents.json',
+          method: 'GET',
+          headers: api.statuspage.header,
+        };
+
+        request(req, callback);
+      },
+
+      list_unresolved: function(callback){
+        var req  = {
+          url: api.statuspage.baseUrl + 'incidents/unresolved.json',
           method: 'GET',
           headers: api.statuspage.header,
         };
