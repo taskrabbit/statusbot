@@ -2,12 +2,13 @@
   "author"      : "Evan Tahler <evantahler@gmail.com>",
   "name"        : "statusbot",
   "description" : "statusbot: checking your stuff",
+  "repository"  : "https://github.com/taskrabbit/statusbot.git",
   "version"     : "0.0.1",
   "engines"     : {
     "node": ">=0.10.0"
   },
   "dependencies" : {
-    "actionhero" : "9.4.0",
+    "actionhero" : "10.0.1",
     "ws"         : "latest",
     "grunt"      : "latest",
     "request"    : "2.40.x"

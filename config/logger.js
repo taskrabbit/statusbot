@@ -11,6 +11,7 @@ exports.default = {
         return new (winston.transports.Console)({
           colorize: true,
           level: 'info',
+          // level: 'debug',
           timestamp: api.utils.sqlDateTime
         });
       });
