@@ -10,7 +10,7 @@ exports.task = {
     api.check.check(params.url, function(){
       setTimeout(function(){
         api.tasks.enqueue("check", params, 'statusbot');
-        next(true);
+        next(null, true);
       }, 5000); // need to sleep for statuspage.io rate limit [ http://doers.statuspage.io/api/v1/ ]
     });
   }
