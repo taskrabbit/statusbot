@@ -7,11 +7,11 @@ exports.task = {
   pluginOptions: {},
   
   run: function(api, params, next){
-    api.check.check(params.url, function(){
+    api.check.check(params.url, function(err, details){
       setTimeout(function(){
         api.tasks.enqueue("check", params, 'statusbot');
-        next(null, true);
-      }, 5000); // need to sleep for statuspage.io rate limit [ http://doers.statuspage.io/api/v1/ ]
+        next(err, details);
+      }, 3000); // need to sleep for statuspage.io rate limit [ http://doers.statuspage.io/api/v1/ ]
     });
   }
 };

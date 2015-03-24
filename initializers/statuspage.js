@@ -1,9 +1,4 @@
-var http = require('http');
-var https = require('https');
 var request = require('request');
-
-http.globalAgent.maxSockets = 100;
-https.globalAgent.maxSockets = 100;
 
 module.exports = {
 

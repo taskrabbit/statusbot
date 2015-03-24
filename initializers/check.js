@@ -25,31 +25,60 @@ module.exports = {
 
           var start = new Date().getTime();
           request.get(check.url, function(error, response, body){
-            var end = new Date().getTime();
-            var delta = (end - start);
-            var status = 'operational';
+            var end     = new Date().getTime();
+            var delta   = (end - start);
+            var status  = 'operational';
+            var started = 0;
+
+            var complete = function(){
+              if(started === 0){
+                var details = { url: url, status:status, delta:delta };
+                callback(null, details);
+              }
+            };
+
             if(delta > check.threshold ){
               status = 'degraded_performance';
+              api.check.counters[check.name]++;
             } else if (error || response.statusCode != 200){
               status = 'partial_outage';
               api.check.counters[check.name]++;
-              api.log("outage count for " + check.name + ": " + api.check.counters[check.name]);
-              if(check.impact != 'none' && api.check.counters[check.name] >= api.config.statuspage.incidentThreshold){ api.check.createIncident(check); }
             }else{
               api.check.counters[check.name] = 0;
             }
-            api.statuspage.components.update(check.component, status, function(err, response, body){
-              if(err){ api.log(err); }
-              api.statuspage.metrics.data(check.metric, delta, Math.floor(start / 1000), function(err, response, body){
-                if(err){ api.log(err, 'warning'); }
-                if(body && body !== ''){
-                  body = JSON.parse(body);
-                  if(body.error){ api.log(body.error, 'warning'); }
+
+            if(api.check.counters[check.name] > 0){
+              api.log("outage count for " + check.name + ": " + api.check.counters[check.name], 'alert');
+              if(api.check.counters[check.name] >= api.config.statuspage.incidentThreshold){
+                if(status === 'partial_outage'){
+                  started++;
+                  api.check.createIncident(function(err){
+                    started--;
+                    if(err){ api.log(err, 'warning'); }
+                    complete();
+                  }); 
                 }
-                var details = { status:status, delta:delta };
-                api.log('checked ' + check.url, 'info', details);
-                callback(null, details);
-              });
+
+                if(status === 'degraded_performance' || status === 'partial_outage'){
+                  started++;
+                  api.statuspage.components.update(check.component, status, function(err, response, body){
+                    started--;
+                    if(err){ api.log(err, 'warning'); }
+                    complete();
+                  });
+                }
+              }
+            }
+
+            started++;
+            api.statuspage.metrics.data(check.metric, delta, Math.floor(start / 1000), function(err, response, body){
+              if(err){ api.log(err, 'warning'); }
+              if(body && body !== ''){
+                body = JSON.parse(body);
+                if(body.error){ api.log(body.error, 'warning'); }
+              }
+              started--;
+              complete();
             });
           });
         }
@@ -59,9 +88,10 @@ module.exports = {
         var status = 'investigating';
         var message = api.config.errors.incidentCreatedError(check.name);
         var name = 'Error with ' + check.name;
+        api.log("creating incident for " + check.name, 'alert');
         api.statuspage.incidents.condionallyCreate(name, status, message, check.impact, function(error, response, body){
           if(error != 'already created'){ api.log('Incident ==>> ' + message, 'warning'); }
-          if(callback){
+          if(typeof callback === 'function'){
             callback(error, response, body);
           }
         });

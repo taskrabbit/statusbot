@@ -3,15 +3,15 @@
   "name"        : "statusbot",
   "description" : "statusbot: checking your stuff",
   "repository"  : "https://github.com/taskrabbit/statusbot.git",
-  "version"     : "0.0.1",
+  "version"     : "0.0.2",
   "engines"     : {
     "node": ">=0.10.0"
   },
   "dependencies" : {
-    "actionhero" : "10.0.1",
+    "actionhero" : "10.1.1",
     "ws"         : "latest",
     "grunt"      : "latest",
-    "request"    : "2.40.x"
+    "request"    : "2.53.x"
   },
   "devDependencies" : {
     "mocha"  : "latest",
