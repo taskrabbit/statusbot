@@ -59,7 +59,10 @@ exports.default = {
         },
         // When true, returnErrorCodes will modify the response header for http(s) clients if connection.error is not null.
         //  You can also set connection.rawConnection.responseHttpCode to specify a code per request.
-        returnErrorCodes: true
+        returnErrorCodes: true,
+        // How many times should we try to boot the srever?
+        // This might happen if the port is in use by another process or the socketfile is claimed
+        bootAttempts: 3,
       }
     }
   }
