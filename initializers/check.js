@@ -52,7 +52,7 @@ module.exports = {
               if(api.check.counters[check.name] >= api.config.statuspage.incidentThreshold){
                 if(status === 'partial_outage'){
                   started++;
-                  api.check.createIncident(function(err){
+                  api.check.createIncident(check, function(err){
                     started--;
                     if(err){ api.log(err, 'warning'); }
                     complete();
