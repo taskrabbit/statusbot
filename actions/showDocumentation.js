@@ -12,8 +12,8 @@ exports.action = {
     optional: [],
   },
 
-  run: function(api, connection, next){    
-    connection.response.documentation = api.documentation.documentation;
-    next(connection, true);
+  run: function(api, data, next){    
+    data.response.documentation = api.documentation.documentation;
+    next();
   }
 };

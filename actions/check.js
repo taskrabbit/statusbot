@@ -12,11 +12,10 @@ exports.action = {
     optional: [],
   },
 
-  run: function(api, connection, next){
-    api.check.check(connection.params.url, function(error, details){
-      connection.response.details = details;
-      connection.error = error;
-      next(connection, true);
+  run: function(api, data, next){
+    api.check.check(data.params.url, function(error, details){
+      data.response.details = details;
+      next(error);
     });
   }
 };

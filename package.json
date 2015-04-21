@@ -8,10 +8,10 @@
     "node": ">=0.10.0"
   },
   "dependencies" : {
-    "actionhero" : "10.1.1",
+    "actionhero" : "11.0.1",
     "ws"         : "latest",
     "grunt"      : "latest",
-    "request"    : "2.53.x"
+    "request"    : "2.55.x"
   },
   "devDependencies" : {
     "mocha"  : "latest",
