@@ -34,6 +34,8 @@ exports.status = {
   },
 
   run: function(api, data, next){
+    data.response.status = 1;
+
     api.stats.getAll(function(err, stats){
       api.tasks.details(function(err, details){
         data.response.id                = api.id;
