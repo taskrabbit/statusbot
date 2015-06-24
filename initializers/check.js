@@ -37,10 +37,10 @@ module.exports = {
               }
             };
 
-            if(delta > check.threshold ){
+            if(!error && delta > check.threshold && response.statusCode == 200){
               status = 'degraded_performance';
               api.check.counters[check.name]++;
-            } else if (error || response.statusCode != 200){
+            } else if(error || response.statusCode != 200){
               status = 'partial_outage';
               api.check.counters[check.name]++;
             }else{
@@ -50,6 +50,7 @@ module.exports = {
             if(api.check.counters[check.name] > 0){
               api.log("outage count for " + check.name + ": " + api.check.counters[check.name], 'alert');
               if(api.check.counters[check.name] >= api.config.statuspage.incidentThreshold){
+                
                 if(status === 'partial_outage'){
                   started++;
                   api.check.createIncident(check, function(err){
@@ -58,16 +59,16 @@ module.exports = {
                     complete();
                   }); 
                 }
-
-                if(status === 'degraded_performance' || status === 'partial_outage'){
-                  started++;
-                  api.statuspage.components.update(check.component, status, function(err, response, body){
-                    started--;
-                    if(err){ api.log(err, 'warning'); }
-                    complete();
-                  });
-                }
               }
+            }
+
+            if( status === 'operational' || ( status != 'operational' && api.check.counters[check.name] >= api.config.statuspage.incidentThreshold)){
+              started++;
+              api.statuspage.components.update(check.component, status, function(err, response, body){
+                started--;
+                if(err){ api.log(err, 'warning'); }
+                complete();
+              });
             }
 
             started++;

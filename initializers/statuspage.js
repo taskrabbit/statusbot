@@ -31,7 +31,7 @@ module.exports = {
               api.log("creating incident: " + name + ", " + status, + ", " + message, + ", " + impact);
               api.statuspage.incidents.create(name, status, message, impact, callback);
             }else{
-              api.log("wanted to created incidien, but already active...");
+              api.log("wanted to created incident, but already active...");
               callback('already created');
             }
           });
