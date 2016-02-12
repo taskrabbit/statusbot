@@ -1,6 +1,6 @@
 # StatusBot
 
-I check URLs and report thier status to statuspage.io.  
+I check URLs and report their status to statuspage.io.  
 This powers `status.taskrabbit.com`.
 
 This tool will gather response times for your METRICS.
