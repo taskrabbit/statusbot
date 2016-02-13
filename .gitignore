@@ -4,7 +4,3 @@ log/*
 pids/*
 config/statuspage.js
 npm-debug.log
-Capfile
-Gemfile
-Gemfile.lock
-config/deploy.rb
