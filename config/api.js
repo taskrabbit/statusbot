@@ -2,14 +2,14 @@ exports.default = {
   general: function(api){
     return {
       apiVersion: '0.0.1',
-      serverName: 'actionhero API',
+      serverName: 'statusbot',
       // id can be set here, or it will be generated dynamically.
       //  Be sure that every server you run has a unique ID (which will happen when generated dynamically)
       //  id: 'myActionHeroServer',
       // A unique token to your application that servers will use to authenticate to each other
       serverToken: 'change-me',
       // The welcome message seen by TCP and webSocket clients upon connection
-      welcomeMessage: 'Hello! Welcome to the actionhero api',
+      welcomeMessage: 'statusbot api',
       // the redis prefix for actionhero's cache objects
       cachePrefix: 'actionhero:cache:',
       // the redis prefix for actionhero's cache/lock objects
