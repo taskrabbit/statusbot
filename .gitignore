@@ -4,3 +4,5 @@ log/*
 pids/*
 config/statuspage.js
 npm-debug.log
+.#*
+TAGS
